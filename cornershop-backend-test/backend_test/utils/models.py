@@ -4,7 +4,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# App
+# Backend test
 from backend_test.utils.managers import SoftDeleteManager
 
 
@@ -43,7 +43,7 @@ class SoftDeleteModel(models.Model):
     available_objects = SoftDeleteManager()
 
     is_deleted = models.BooleanField(
-        _("is deleted"),
+        _("soft deleted status"),
         default=False,
         help_text=_("Indicator to know if a object was deleted or not"),
     )
@@ -63,4 +63,6 @@ class SoftDeleteModel(models.Model):
         self.save()
 
     class Meta:
+        """Meta options."""
+
         abstract = True
