@@ -14,3 +14,7 @@ htmlcov/
 *.ipynb
 .DS_Store
 _*/
+
+# vscode settings
+.vscode/*
+.devcontainer/*
