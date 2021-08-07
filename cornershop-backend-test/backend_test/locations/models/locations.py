@@ -34,7 +34,7 @@ class Location(TimeStampedModel):
         verbose_name=_("location"),
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="locations_location",
         related_query_name="location_location",
     )

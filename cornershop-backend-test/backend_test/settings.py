@@ -32,8 +32,10 @@ SESSION_COOKIE_HTTPONLY = True
 
 SERVER_URL = os.getenv("SERVER_URL", default="*")
 
-
 APPEND_SLASH = False
+
+# Users & Authentication
+AUTH_USER_MODEL = "users.User"
 
 # Application definition
 # Apps
@@ -48,7 +50,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
 
-LOCAL_APPS = ["backend_test.utils", "backend_test.locations"]
+LOCAL_APPS = ["backend_test.utils", "backend_test.locations", "backend_test.users"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

@@ -40,6 +40,7 @@ class SoftDeleteModel(models.Model):
     kept in database for any reason.
     """
 
+    objects = models.Manager()
     available_objects = SoftDeleteManager()
 
     is_deleted = models.BooleanField(
