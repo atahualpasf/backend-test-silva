@@ -46,6 +46,12 @@ class MenuOption(TimeStampedModel):
 
         verbose_name = _("menu option")
         verbose_name_plural = _("menu options")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["menu", "meal"],
+                name="menu_option_menu_meal_unique",
+            )
+        ]
         ordering = ["option", "-created"]
         db_table = "menus_menu_option"
 

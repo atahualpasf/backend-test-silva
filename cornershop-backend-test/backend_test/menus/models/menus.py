@@ -35,10 +35,14 @@ class Menu(TimeStampedModel, SoftDeleteModel):
     extra fields.
     """
 
-    objects = MenuManager()
-
     uuid = models.UUIDField(unique=True, editable=False)
-    date = models.DateField(_("date"))
+    date = models.DateField(
+        _("date"),
+        unique=True,
+        error_messages={"unique": "A menu with that date already exists."},
+    )
+
+    objects = MenuManager()
 
     class Meta(TimeStampedModel.Meta):
         """Meta options."""
