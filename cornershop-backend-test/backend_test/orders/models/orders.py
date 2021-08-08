@@ -1,12 +1,10 @@
 """Orders models."""
 
 # Django
-from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 # Backend test
-from backend_test.locations.models import Location
 from backend_test.menus.models.meals import Meal
 from backend_test.menus.models.menus import Menu
 from backend_test.users.models.employees import Employee
