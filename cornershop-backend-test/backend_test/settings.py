@@ -50,7 +50,12 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
 
-LOCAL_APPS = ["backend_test.utils", "backend_test.locations", "backend_test.users"]
+LOCAL_APPS = [
+    "backend_test.utils",
+    "backend_test.locations",
+    "backend_test.users",
+    "backend_test.menus",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

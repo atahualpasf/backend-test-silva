@@ -5,9 +5,8 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from backend_test.locations.models import Location
-
 # Backend test
+from backend_test.locations.models import Location
 from backend_test.utils.models import SoftDeleteModel, TimeStampedModel
 
 
@@ -37,7 +36,9 @@ class Employee(TimeStampedModel, SoftDeleteModel):
     slack_username = models.CharField(
         _("slack username"),
         unique=True,
-        error_messages={"unique": "A user with that slack username already exists."},
+        error_messages={
+            "unique": "A employee with that slack username already exists."
+        },
         max_length=50,
     )
 
