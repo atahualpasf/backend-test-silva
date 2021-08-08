@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block page_title %}Menu {{ menu.pk }} detail{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <h2 class="mb-0">Menu {{ menu.pk }} detail</h2>
+  </div>
+  <div class="row">
+    {% include "menus/menus/includes/menu_card.html" %}
+  </div>
+  <div class="border-top my-3"></div>
+  <div class="row">
+    <div class="col-12">
+      <h3 class="mb-0">Menu options</h3>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        {% for menu_option in menu_options %}
+          {% include "menus/meals/includes/meal_card.html" with meal=menu_option.meal menu_option=menu_option %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

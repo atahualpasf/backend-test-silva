@@ -1,0 +1,13 @@
+<div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-0 post-container">
+  <div class="media pt-3 pl-3 pb-1">
+    <div class="media-body">
+      {% if menu_option %}
+      <p class="mb-1">Option: {{ menu_option.option }}</p>
+      {% endif %}
+      {% if not menu_option %}
+      <p class="mb-1">ID: {{ meal.pk }}</p>
+      {% endif %}
+      <p class="mb-1">Name: {{ meal.name }}</p>
+    </div>
+  </div>
+</div>
