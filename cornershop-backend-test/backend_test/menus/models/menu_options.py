@@ -41,7 +41,7 @@ class MenuOption(TimeStampedModel):
         help_text=_("Option number in menu (useful for ordering)."),
     )
 
-    class Meta:
+    class Meta(TimeStampedModel.Meta):
         """Meta options."""
 
         verbose_name = _("menu option")

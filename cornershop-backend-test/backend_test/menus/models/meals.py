@@ -22,7 +22,7 @@ class Meal(TimeStampedModel, SoftDeleteModel):
         max_length=255,
     )
 
-    class Meta:
+    class Meta(TimeStampedModel.Meta):
         """Meta options."""
 
         verbose_name = _("meal")

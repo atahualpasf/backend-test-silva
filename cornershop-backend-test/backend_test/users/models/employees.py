@@ -42,7 +42,7 @@ class Employee(TimeStampedModel, SoftDeleteModel):
         max_length=50,
     )
 
-    class Meta:
+    class Meta(TimeStampedModel.Meta):
         """Meta options."""
 
         verbose_name = _("employee")

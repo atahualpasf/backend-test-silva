@@ -40,7 +40,7 @@ class Menu(TimeStampedModel, SoftDeleteModel):
     uuid = models.UUIDField(unique=True, editable=False)
     date = models.DateField(_("date"))
 
-    class Meta:
+    class Meta(TimeStampedModel.Meta):
         """Meta options."""
 
         verbose_name = _("menu")
