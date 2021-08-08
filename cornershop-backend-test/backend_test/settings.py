@@ -55,6 +55,7 @@ LOCAL_APPS = [
     "backend_test.locations",
     "backend_test.users",
     "backend_test.menus",
+    "backend_test.orders",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
