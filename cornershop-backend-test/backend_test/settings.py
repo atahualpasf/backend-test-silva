@@ -32,22 +32,32 @@ SESSION_COOKIE_HTTPONLY = True
 
 SERVER_URL = os.getenv("SERVER_URL", default="*")
 
-
 APPEND_SLASH = False
 
-# Application definition
+# Users & Authentication
+AUTH_USER_MODEL = "users.User"
 
-INSTALLED_APPS = [
+# Application definition
+# Apps
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "django_extensions",
-    "backend_test.utils",
 ]
+
+THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
+
+LOCAL_APPS = [
+    "backend_test.utils",
+    "backend_test.locations",
+    "backend_test.users",
+    "backend_test.menus",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "backend_test.middleware.HealthCheckAwareSessionMiddleware",

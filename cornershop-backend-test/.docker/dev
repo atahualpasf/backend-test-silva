@@ -45,7 +45,7 @@ isort)
   isort .
 ;;
 black)
-  black .
+  black . --exclude="^.*\/migrations\/.*\.py$"
 ;;
 pipi)
 
