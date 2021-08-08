@@ -1,14 +1,16 @@
 <div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-0 post-container">
-  <div class="media pt-3 pl-3 pb-1">
-    <div class="media-body">
-      <p class="mb-1">ID: {{ menu.pk }}</p>
-      <p class="mb-1">Options in menu: {{ menu.menu_options.count }}</p>
+  <a class="text-decoration-none" href="{% url "menus:detail" menu.pk %}">
+    <div class="media pt-3 pl-3 pb-1">
+      <div class="media-body">
+        <p class="mb-1">ID: {{ menu.pk }}</p>
+        <p class="mb-1">Options in menu: {{ menu.menu_options.count }}</p>
+      </div>
     </div>
-  </div>
 
-  <div class="media pt-3 pl-3 pb-1">
-    <div class="media-body">
-      <b>{{ menu.date }}</b>
+    <div class="media pt-3 pl-3 pb-1">
+      <div class="media-body">
+        <b>{{ menu.date }}</b>
+      </div>
     </div>
-  </div>
+  </a>
 </div>
