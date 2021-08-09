@@ -43,6 +43,7 @@ class Menu(TimeStampedModel, SoftDeleteModel):
 
         verbose_name = _("menu")
         verbose_name_plural = _("menus")
+        permissions = [("send_slack_reminder", _("Send slack reminder"))]
 
     def __str__(self) -> str:
         """Return instance string representation"""
