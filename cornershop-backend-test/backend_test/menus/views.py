@@ -81,6 +81,29 @@ class MenuUpdateView(GroupRequiredMixin, UpdateView):
     template_name = "menus/menus/update.html"
 
 
+class MenuPublicDetailView(DetailView):
+    """Return public menu detail."""
+
+    # DetailView default
+    model = Menu
+    context_object_name = "menu"
+    slug_field = "uuid"
+    slug_url_kwarg = "uuid"
+    template_name = "menus/menus/public.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Passing menu options of the menu in context data.
+        """
+        context = super(MenuPublicDetailView, self).get_context_data(**kwargs)
+        context["menu_options"] = (
+            MenuOption.objects.filter(menu=self.object)
+            .select_related("meal")
+            .order_by("option")
+        )
+        return context
+
+
 # Menu options views
 def management_menu_options(request, menu_id):
     menu = Menu.objects.get(pk=menu_id)

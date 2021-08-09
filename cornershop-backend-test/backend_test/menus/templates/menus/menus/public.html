@@ -17,16 +17,19 @@
       <h3 class="mb-0">Menu options</h3>
     </div>
   </div>
+  {% if perms.menuoption.add_menuoption and perms.menuoption.change_menuoption  %}
   <div class="row justify-content-center">
     <div class="col-8">
-      <a class="btn btn-block btn-primary" href="{% url "menus:options:management" menu.pk %}">Menu options management</a>
+      <a class="btn btn-block btn-primary" href="{% url "menus:options:management" menu.pk %}">Menu options
+        management</a>
     </div>
   </div>
+  {% endif %}
   <div class="row">
     <div class="col-12">
       <div class="row justify-content-center">
         {% for menu_option in menu_options %}
-          {% include "menus/meals/includes/meal_card.html" with meal=menu_option.meal menu_option=menu_option %}
+        {% include "menus/meals/includes/meal_card.html" with meal=menu_option.meal menu_option=menu_option %}
         {% endfor %}
       </div>
     </div>

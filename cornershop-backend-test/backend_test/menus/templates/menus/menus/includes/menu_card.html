@@ -8,19 +8,25 @@
       <b>{{ menu.date }}</b>
     </div>
 
+    {% if perms.menus.view_menu or perms.menus.change_menu %}
     <div class="card-footer">
       <div class="row">
+        {% if perms.menus.view_menu %}
         <div class="col-6 text-center">
           <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}" title="Show detail">
             <i class="fas fa-eye"></i>
           </a>
         </div>
+        {% endif %}
+        {% if perms.menus.change_menu %}
         <div class="col-6 text-center">
           <a class="btn btn-block btn-primary" href="{% url "menus:update" menu.pk %}" title="Edit">
             <i class="fas fa-edit"></i>
           </a>
         </div>
+        {% endif %}
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
