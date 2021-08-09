@@ -16,6 +16,13 @@
     <div class="col-12">
       <h3 class="mb-0">Menu options</h3>
     </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}">Create menu options</a>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-12">
       <div class="row">
         {% for menu_option in menu_options %}

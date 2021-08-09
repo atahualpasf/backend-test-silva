@@ -1,16 +1,26 @@
-<div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-0 post-container">
-  <a class="text-decoration-none" href="{% url "menus:detail" menu.pk %}">
-    <div class="media pt-3 pl-3 pb-1">
-      <div class="media-body">
-        <p class="mb-1">ID: {{ menu.pk }}</p>
-        <p class="mb-1">Options in menu: {{ menu.menu_options.count }}</p>
-      </div>
+<div class="col-sm-12 col-md-8 offset-md-2 mt-5 p-0">
+  <div class="card">
+    <div class="card-body">
+      <p class="mb-1">ID: {{ menu.pk }}</p>
+      <p class="mb-1">Options in menu: {{ menu.menu_options.count }}</p>
+    </div>
+    <div class="card-body">
+      <b>{{ menu.date }}</b>
     </div>
 
-    <div class="media pt-3 pl-3 pb-1">
-      <div class="media-body">
-        <b>{{ menu.date }}</b>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-6 text-center">
+          <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}" title="Show detail">
+            <i class="fas fa-eye"></i>
+          </a>
+        </div>
+        <div class="col-6 text-center">
+          <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}" title="Edit">
+            <i class="fas fa-edit"></i>
+          </a>
+        </div>
       </div>
     </div>
-  </a>
+  </div>
 </div>

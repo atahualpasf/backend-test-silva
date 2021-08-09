@@ -2,9 +2,10 @@
 
 # Django
 from django.http.response import HttpResponse
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView
 
 # Backend test
+from backend_test.menus.forms import MenuForm
 from backend_test.menus.models import Menu, MenuOption
 from backend_test.utils.mixins import GroupRequiredMixin
 
@@ -25,9 +26,9 @@ class MenusListView(GroupRequiredMixin, ListView):
 
     # ListView default
     model = Menu
-    paginate_by = 4
+    paginate_by = 2
     context_object_name = "menus"
-    template_name = "menus/list.html"
+    template_name = "menus/menus/list.html"
 
 
 class MenuDetailView(GroupRequiredMixin, DetailView):
@@ -39,7 +40,7 @@ class MenuDetailView(GroupRequiredMixin, DetailView):
     # DetailView default
     model = Menu
     context_object_name = "menu"
-    template_name = "menus/detail.html"
+    template_name = "menus/menus/detail.html"
 
     def get_context_data(self, **kwargs):
         """
@@ -52,3 +53,14 @@ class MenuDetailView(GroupRequiredMixin, DetailView):
             .order_by("option")
         )
         return context
+
+
+class MenuCreateView(GroupRequiredMixin, CreateView):
+
+    # GroupRequiredMixin
+    group_required = ["meal_coordinator"]
+
+    # CreateView default
+    model = Menu
+    form_class = MenuForm
+    template_name = "menus/menus/create.html"

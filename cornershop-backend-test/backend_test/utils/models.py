@@ -46,6 +46,7 @@ class SoftDeleteModel(models.Model):
     is_deleted = models.BooleanField(
         _("soft deleted status"),
         default=False,
+        editable=False,
         help_text=_("Indicator to know if a object was deleted or not"),
     )
 
