@@ -253,3 +253,7 @@ LOGGING = {
 LOGIN_URL = "/users/login"
 LOGIN_REDIRECT_URL = "/users/"
 LOGOUT_REDIRECT_URL = LOGIN_URL
+
+# App specific configurations
+# Integer between 0 - 23
+GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR = 11

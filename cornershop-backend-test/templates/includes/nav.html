@@ -9,21 +9,27 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
 
+                {% if perms.menus.view_menu %}
                 <li class="nav-item nav-icon">
                     <a href="{% url "menus:index" %}" title="Menus" tooltip="Menus">
                         Menus
                     </a>
                 </li>
+                {% endif %}
+                {% if perms.menus.view_meal %}
                 <li class="nav-item nav-icon">
                     <a href="{% url "meals:index" %}" title="Meals" tooltip="Meals">
                         Meals
                     </a>
                 </li>
+                {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item nav-icon">
                     <a href="{% url "users:logout" %}" title="Logout" tooltip="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </li>
+                {% endif %}
 
             </ul>
         </div>

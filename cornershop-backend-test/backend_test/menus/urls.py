@@ -21,6 +21,7 @@ urlpatterns = [
     path(route="create", view=views.MenuCreateView.as_view(), name="create"),
     path(route="<int:pk>/update", view=views.MenuUpdateView.as_view(), name="update"),
     path(route="<int:pk>", view=views.MenuDetailView.as_view(), name="detail"),
+    path(route="<uuid:uuid>", view=views.MenuPublicDetailView.as_view(), name="public"),
     path(
         "<int:menu_id>/options/",
         include((menu_options_patterns, "options"), namespace="options"),
