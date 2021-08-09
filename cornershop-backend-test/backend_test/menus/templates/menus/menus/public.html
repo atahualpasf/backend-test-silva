@@ -17,7 +17,7 @@
       <h3 class="mb-0">Menu options</h3>
     </div>
   </div>
-  {% if perms.menuoption.add_menuoption and perms.menuoption.change_menuoption  %}
+  {% if perms.menus.add_menuoption and perms.menus.change_menuoption  %}
   <div class="row justify-content-center">
     <div class="col-8">
       <a class="btn btn-block btn-primary" href="{% url "menus:options:management" menu.pk %}">Menu options
