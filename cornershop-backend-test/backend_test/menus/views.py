@@ -3,6 +3,7 @@
 # Django
 from django.http.response import HttpResponse
 from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic.edit import UpdateView
 
 # Backend test
 from backend_test.menus.forms import MenuForm
@@ -10,12 +11,22 @@ from backend_test.menus.models import Menu, MenuOption
 from backend_test.utils.mixins import GroupRequiredMixin
 
 
-def coordinate(request):
-    return HttpResponse("Hola coordinate")
-
-
 def options(request):
     return HttpResponse("Hola options")
+
+
+class MenuCreateView(GroupRequiredMixin, CreateView):
+    """
+    Class to handle menu's creation
+    """
+
+    # GroupRequiredMixin
+    group_required = ["meal_coordinator"]
+
+    # CreateView default
+    model = Menu
+    form_class = MenuForm
+    template_name = "menus/menus/create.html"
 
 
 class MenusListView(GroupRequiredMixin, ListView):
@@ -55,12 +66,13 @@ class MenuDetailView(GroupRequiredMixin, DetailView):
         return context
 
 
-class MenuCreateView(GroupRequiredMixin, CreateView):
+class MenuUpdateView(GroupRequiredMixin, UpdateView):
+    """Class to handle menu's edition."""
 
     # GroupRequiredMixin
     group_required = ["meal_coordinator"]
 
-    # CreateView default
+    # UpdateView default
     model = Menu
     form_class = MenuForm
-    template_name = "menus/menus/create.html"
+    template_name = "menus/menus/update.html"
