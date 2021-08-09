@@ -5,18 +5,13 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
 
 
 @login_required
 def index(request):
-    """Redirecting to default view for each type of user (employees or Nora)"""
-    group = [group.name for group in request.user.groups.filter(user=request.user)]
-
-    if "meal_coordinator" in group:
-        return HttpResponseRedirect(reverse("menus:index"))
-
-    return HttpResponseRedirect(reverse("menus:options"))
+    return render(request, "users/index.html")
 
 
 class LoginView(auth_views.LoginView):
