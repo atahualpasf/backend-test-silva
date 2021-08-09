@@ -1,7 +1,9 @@
 """Menus views."""
 
 # Django
-from django.http.response import HttpResponse
+from django.forms.models import inlineformset_factory
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 
@@ -76,3 +78,29 @@ class MenuUpdateView(GroupRequiredMixin, UpdateView):
     model = Menu
     form_class = MenuForm
     template_name = "menus/menus/update.html"
+
+
+def management_menu_options(request, menu_id):
+    menu = Menu.objects.get(pk=menu_id)
+    MenuOptionInlineFormSet = inlineformset_factory(
+        Menu,
+        MenuOption,
+        fields=(
+            "meal",
+            "option",
+        ),
+        can_delete=False,
+    )
+    if request.method == "POST":
+        formset = MenuOptionInlineFormSet(request.POST, request.FILES, instance=menu)
+        if formset.is_valid():
+            formset.save()
+            # Do something. Should generally end with a redirect. For example:
+            return HttpResponseRedirect(menu.get_absolute_url())
+    else:
+        formset = MenuOptionInlineFormSet(instance=menu)
+    return render(
+        request,
+        "menus/menu_options/management.html",
+        {"formset": formset, "menu": menu},
+    )
