@@ -1,6 +1,8 @@
 """Menus views."""
 
 # Django
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms.models import inlineformset_factory
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -18,13 +20,13 @@ def options(request):
 
 
 # Menus views
-class MenuCreateView(GroupRequiredMixin, CreateView):
+class MenuCreateView(PermissionRequiredMixin, CreateView):
     """
     Class to handle menu's creation
     """
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.add_menu",)
 
     # CreateView default
     model = Menu
@@ -32,11 +34,11 @@ class MenuCreateView(GroupRequiredMixin, CreateView):
     template_name = "menus/menus/create.html"
 
 
-class MenusListView(GroupRequiredMixin, ListView):
+class MenusListView(PermissionRequiredMixin, ListView):
     """Return all menus."""
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.view_menu",)
 
     # ListView default
     model = Menu
@@ -45,11 +47,11 @@ class MenusListView(GroupRequiredMixin, ListView):
     template_name = "menus/menus/list.html"
 
 
-class MenuDetailView(GroupRequiredMixin, DetailView):
+class MenuDetailView(PermissionRequiredMixin, DetailView):
     """Return menu detail."""
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.view_menu",)
 
     # DetailView default
     model = Menu
@@ -69,11 +71,11 @@ class MenuDetailView(GroupRequiredMixin, DetailView):
         return context
 
 
-class MenuUpdateView(GroupRequiredMixin, UpdateView):
+class MenuUpdateView(PermissionRequiredMixin, UpdateView):
     """Class to handle menu's edition."""
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.change_menu",)
 
     # UpdateView default
     model = Menu
@@ -105,6 +107,16 @@ class MenuPublicDetailView(DetailView):
 
 
 # Menu options views
+@login_required
+@permission_required(
+    (
+        "menus.add_menuoption",
+        "menus.change_menuoption",
+        "menus.delete_menuoption",
+        "menus.view_menuoption",
+    ),
+    raise_exception=True,
+)
 def management_menu_options(request, menu_id):
     menu = Menu.objects.get(pk=menu_id)
     MenuOptionInlineFormSet = inlineformset_factory(
@@ -132,13 +144,13 @@ def management_menu_options(request, menu_id):
 
 
 # Meals views
-class MealCreateView(GroupRequiredMixin, CreateView):
+class MealCreateView(PermissionRequiredMixin, CreateView):
     """
     Class to handle meal's creation
     """
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.add_meal",)
 
     # CreateView default
     model = Meal
@@ -146,11 +158,11 @@ class MealCreateView(GroupRequiredMixin, CreateView):
     template_name = "menus/meals/create.html"
 
 
-class MealListView(GroupRequiredMixin, ListView):
+class MealListView(PermissionRequiredMixin, ListView):
     """Return all meals."""
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.view_meal",)
 
     # ListView default
     model = Meal
@@ -159,11 +171,11 @@ class MealListView(GroupRequiredMixin, ListView):
     template_name = "menus/meals/list.html"
 
 
-class MealDetailView(GroupRequiredMixin, DetailView):
+class MealDetailView(PermissionRequiredMixin, DetailView):
     """Return meal detail."""
 
-    # GroupRequiredMixin
-    group_required = ["meal_coordinator"]
+    # PermissionRequiredMixin
+    permission_required = ("menus.view_meal",)
 
     # DetailView default
     model = Meal
