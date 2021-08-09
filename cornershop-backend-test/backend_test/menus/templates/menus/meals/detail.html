@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block page_title %}Meal {{ meal.pk }} detail{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <h2 class="mb-0">Meal {{ meal.pk }} detail</h2>
+  </div>
+  <div class="row">
+    {% include "menus/meals/includes/meal_card.html" %}
+  </div>
+</div>
+
+{% endblock %}

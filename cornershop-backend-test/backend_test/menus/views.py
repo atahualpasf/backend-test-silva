@@ -8,7 +8,7 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 
 # Backend test
-from backend_test.menus.forms import MenuForm
+from backend_test.menus.forms import MealForm, MenuForm
 from backend_test.menus.models import Meal, Menu, MenuOption
 from backend_test.utils.mixins import GroupRequiredMixin
 
@@ -109,6 +109,20 @@ def management_menu_options(request, menu_id):
 
 
 # Meals views
+class MealCreateView(GroupRequiredMixin, CreateView):
+    """
+    Class to handle meal's creation
+    """
+
+    # GroupRequiredMixin
+    group_required = ["meal_coordinator"]
+
+    # CreateView default
+    model = Meal
+    form_class = MealForm
+    template_name = "menus/meals/create.html"
+
+
 class MealListView(GroupRequiredMixin, ListView):
     """Return all meals."""
 
@@ -120,3 +134,15 @@ class MealListView(GroupRequiredMixin, ListView):
     paginate_by = 2
     context_object_name = "meals"
     template_name = "menus/meals/list.html"
+
+
+class MealDetailView(GroupRequiredMixin, DetailView):
+    """Return meal detail."""
+
+    # GroupRequiredMixin
+    group_required = ["meal_coordinator"]
+
+    # DetailView default
+    model = Meal
+    context_object_name = "meal"
+    template_name = "menus/meals/detail.html"

@@ -12,6 +12,8 @@ menu_options_patterns = [
 
 meals_patterns = [
     path(route="", view=views.MealListView.as_view(), name="index"),
+    path(route="create", view=views.MealCreateView.as_view(), name="create"),
+    path(route="<int:pk>", view=views.MealDetailView.as_view(), name="detail"),
 ]
 
 urlpatterns = [
