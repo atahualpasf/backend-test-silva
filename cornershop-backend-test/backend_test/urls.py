@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.urls import include, path
 
+from backend_test.menus.urls import meals_patterns
+
 from .utils.healthz import healthz
 
 urlpatterns = [
     path("healthz", healthz, name="healthz"),
     path("users/", include(("backend_test.users.urls", "users"), namespace="users")),
     path("menus/", include(("backend_test.menus.urls", "menus"), namespace="menus")),
+    path(
+        "meals/",
+        include((meals_patterns, "meals"), namespace="meals"),
+    ),
 ]

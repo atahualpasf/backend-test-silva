@@ -9,7 +9,7 @@ from django.views.generic.edit import UpdateView
 
 # Backend test
 from backend_test.menus.forms import MenuForm
-from backend_test.menus.models import Menu, MenuOption
+from backend_test.menus.models import Meal, Menu, MenuOption
 from backend_test.utils.mixins import GroupRequiredMixin
 
 
@@ -17,6 +17,7 @@ def options(request):
     return HttpResponse("Hola options")
 
 
+# Menus views
 class MenuCreateView(GroupRequiredMixin, CreateView):
     """
     Class to handle menu's creation
@@ -80,6 +81,7 @@ class MenuUpdateView(GroupRequiredMixin, UpdateView):
     template_name = "menus/menus/update.html"
 
 
+# Menu options views
 def management_menu_options(request, menu_id):
     menu = Menu.objects.get(pk=menu_id)
     MenuOptionInlineFormSet = inlineformset_factory(
@@ -104,3 +106,17 @@ def management_menu_options(request, menu_id):
         "menus/menu_options/management.html",
         {"formset": formset, "menu": menu},
     )
+
+
+# Meals views
+class MealListView(GroupRequiredMixin, ListView):
+    """Return all meals."""
+
+    # GroupRequiredMixin
+    group_required = ["meal_coordinator"]
+
+    # ListView default
+    model = Meal
+    paginate_by = 2
+    context_object_name = "meals"
+    template_name = "menus/meals/list.html"
