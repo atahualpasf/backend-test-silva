@@ -9,5 +9,19 @@
       {% endif %}
       <p class="mb-1">Name: {{ meal.name }}</p>
     </div>
+
+    {% if can_generate_order %}
+    <div class="card-footer">
+      <div class="row justify-content-center">
+        <div class="col-6 text-center">
+          <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}" title="Show detail">
+            <i class="fas fa-utensils"></i>
+            Generate order request
+            <i class="fas fa-utensils"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>

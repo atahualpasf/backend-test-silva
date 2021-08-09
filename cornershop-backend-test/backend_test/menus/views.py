@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms.models import inlineformset_factory
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 
@@ -102,6 +103,10 @@ class MenuPublicDetailView(DetailView):
             MenuOption.objects.filter(menu=self.object)
             .select_related("meal")
             .order_by("option")
+        )
+        context["can_generate_order"] = (
+            timezone.now().date() == self.object.date
+            and timezone.now() < self.object.get_deadline_datetime()
         )
         return context
 

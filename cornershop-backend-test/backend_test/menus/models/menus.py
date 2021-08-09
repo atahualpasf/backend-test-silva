@@ -2,13 +2,18 @@
 
 # Python
 import uuid
+from datetime import datetime
 
 # Django
+from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls.base import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+# Python
+import pytz
 
 # Backend test
 from backend_test.utils.models import SoftDeleteModel, TimeStampedModel
@@ -52,3 +57,15 @@ class Menu(TimeStampedModel, SoftDeleteModel):
     def get_absolute_url(self):
         """Return url to see instance's detail"""
         return reverse("menus:detail", kwargs={"pk": self.pk})
+
+    def get_deadline_datetime(self):
+        """Return current timestamp deadline to generate an order"""
+        return timezone.make_aware(
+            datetime(
+                self.date.year,
+                self.date.month,
+                self.date.day,
+                settings.GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR,
+            ),
+            timezone=pytz.timezone("America/Santiago"),
+        )
