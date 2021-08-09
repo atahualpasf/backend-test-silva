@@ -2,6 +2,7 @@
 
 # Django
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 # Backend test
@@ -33,3 +34,7 @@ class Meal(TimeStampedModel, SoftDeleteModel):
         return "{}: {}{too_long}".format(
             self.pk, self.name[0:25], too_long="..." if len(self.name) > 25 else ""
         )
+
+    def get_absolute_url(self):
+        """Return url to see instance's detail"""
+        return reverse("meals:detail", kwargs={"pk": self.pk})

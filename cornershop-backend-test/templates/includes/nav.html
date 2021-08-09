@@ -10,13 +10,17 @@
             <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item nav-icon">
-                    <a href="{% url "menus:index" %}">
-                        <i class="fas fa-plus"></i>
+                    <a href="{% url "menus:index" %}" title="Menus" tooltip="Menus">
+                        Menus
                     </a>
                 </li>
-
                 <li class="nav-item nav-icon">
-                    <a href="{% url "users:logout" %}">
+                    <a href="{% url "meals:index" %}" title="Meals" tooltip="Meals">
+                        Meals
+                    </a>
+                </li>
+                <li class="nav-item nav-icon">
+                    <a href="{% url "users:logout" %}" title="Logout" tooltip="Logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </li>

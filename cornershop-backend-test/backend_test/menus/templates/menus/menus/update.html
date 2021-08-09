@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_title %}Menu's {{ menu.pk  }} update{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Menu's {{ menu.pk }} update</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
