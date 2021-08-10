@@ -30,4 +30,5 @@ urlpatterns = [
     path(
         "orders/", include(("backend_test.orders.urls", "orders"), namespace="orders")
     ),
+    path("slack/", include(("backend_test.slack.urls", "slack"), namespace="slack")),
 ]

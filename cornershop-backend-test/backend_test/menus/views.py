@@ -1,17 +1,25 @@
 """Menus views."""
+# Python
+import json
 
 # Django
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.sites.models import Site
 from django.forms.models import inlineformset_factory
-from django.http.response import HttpResponse, HttpResponseRedirect
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, ListView
-from django.views.generic.edit import UpdateView
+from django.template.loader import render_to_string
+from django.urls.base import reverse
+from django.utils.encoding import force_str
+from django.views.decorators.http import require_POST
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 # Backend test
 from backend_test.menus.forms import MealForm, MenuForm
 from backend_test.menus.models import Meal, Menu, MenuOption
+from backend_test.menus.tasks import send_menu_public_url_task
 from backend_test.orders.models.orders import Order
 from backend_test.users.models import Employee
 
@@ -128,6 +136,79 @@ class MenuPublicDetailView(DetailView):
         # Verify valid user
         context["is_valid_user"] = not self.request.user.is_authenticated or employee
         return context
+
+
+@require_POST
+@permission_required("menus.send_slack_reminder")
+def send_slack_reminder(request):
+    menu_id = request.POST.get("menu", None)
+    menu = Menu.objects.filter(pk=menu_id).first() if menu_id else None
+
+    # Check if menu exists
+    if not menu:
+        return render(
+            request,
+            "handler.html",
+            {"msg": "An error has occurred processing your request."},
+        )
+
+    # Check if menu is available
+    if not menu.is_available():
+        return render(
+            request,
+            "handler.html",
+            {"msg": "Menu is unavailable."},
+        )
+
+    menu_options = (
+        MenuOption.objects.filter(menu_id=menu.pk)
+        .select_related("meal")
+        .order_by("option")
+    )
+
+    # Check if menu has menu options
+    if not menu_options:
+        return render(
+            request,
+            "handler.html",
+            {"msg": "Can't sent reminder if the menu has not options."},
+        )
+
+    # Check if site exists
+    site = Site.objects.filter(pk=settings.SITE_ID).first()
+    if not site:
+        return render(
+            request,
+            "handler.html",
+            {"msg": "Can't sent reminder if the menu has not options."},
+        )
+
+    template_params = {
+        "action_url": f"https://{site}"
+        + reverse("menus:public", kwargs={"uuid": menu.uuid}),
+        "menu_options": menu_options,
+    }
+    data = json.loads(
+        force_str(
+            render_to_string(
+                "menus/menus/slack/today_reminder.json",
+                template_params,
+            ).strip()
+        )
+    )
+    text = force_str(
+        render_to_string(
+            "menus/menus/slack/today_reminder_text.html",
+            template_params,
+        ).strip()
+    )
+    send_menu_public_url_task.delay(data, text)
+
+    return render(
+        request,
+        "handler.html",
+        {"msg": "Reminder has sent successfully", "success": True},
+    )
 
 
 # Menu options views

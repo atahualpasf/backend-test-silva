@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block page_title %}Error detail{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <h2 class="mb-0">Error detail</h2>
+  </div>
+  {% if msg %}
+  <div class="row justify-content-center">
+    <div class="col-6 text-{% if success %}success{% else %}danger{% endif %}">
+      {{ msg }}
+    </div>
+  </div>
+  {% endif %}
+  {% if return_url %}
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <a class="btn btn-block btn-primary" href="{% url "return_url" %}">Continuar</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

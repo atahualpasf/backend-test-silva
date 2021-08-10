@@ -1,0 +1,59 @@
+[
+  {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": "Hello!",
+      "emoji": true
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": "I share with you today's menu :smile:",
+      "emoji": true
+    }
+  },
+  {
+    "type": "divider"
+  },{% for menu_option in menu_options %}
+  {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": ":black_medium_small_square: {{ menu_option.option }} - {{ menu_option.meal.name }}",
+      "emoji": true
+    }
+  },{% endfor %}
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "plain_text",
+      "text": "Have a nice day!",
+      "emoji": true
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": ":fork_and_knife: Go and select your favorite menu for today"
+    },
+    "accessory": {
+      "type": "button",
+      "text": {
+        "type": "plain_text",
+        "text": "Today's menu",
+        "emoji": true
+      },
+      "style": "primary",
+      "value": "select_menu",
+      "url": "{{ action_url }}",
+      "action_id": "button-action"
+    }
+  }
+]
