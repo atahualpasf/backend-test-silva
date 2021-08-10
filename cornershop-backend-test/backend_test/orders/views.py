@@ -1,17 +1,19 @@
 """Orders views."""
 
 # Django
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls.base import reverse
 from django.views.generic.base import View
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 
 from backend_test.menus.models.menus import Menu
 
 # Backend test
-from backend_test.orders.forms import OrderForm
+from backend_test.orders.forms import OrderForm, OrderUpdateForm
 from backend_test.orders.models.orders import Order
 from backend_test.users.models.employees import Employee
 
@@ -23,6 +25,9 @@ class GenerateOrderView(View):
 
     # OPTIMIZE: This method need to be refactor. Code smell and is dont follow DRY
     def post(self, request, *args, **kwargs):
+        """
+        Post view function to handle order generation.
+        """
         # Get menu for redirection
         menu_pk = request.POST.get("menu", None)
         menu = Menu.objects.filter(pk=menu_pk).first() if menu_pk else None
@@ -101,7 +106,8 @@ class GenerateOrderView(View):
 class OrderDetailView(PermissionRequiredMixin, DetailView):
     """Return order detail."""
 
-    permission_required = ("menus.change_menu",)
+    # PermissionRequiredMixin
+    permission_required = ("orders.view_order",)
 
     # DetailView default
     model = Order
@@ -109,7 +115,10 @@ class OrderDetailView(PermissionRequiredMixin, DetailView):
     template_name = "orders/detail.html"
 
     def has_permission(self) -> bool:
-        """Allowing if the employee is the order's owner."""
+        """
+        Allowing if the employee is the order's owner. If not is the owner
+        check the permissions in permission_required.
+        """
         order = self.get_object()
         try:
             employee = (
@@ -120,5 +129,68 @@ class OrderDetailView(PermissionRequiredMixin, DetailView):
         except Employee.DoesNotExist:
             employee = None
         if employee and order.employee.pk == employee.pk:
+            return True
+        return super().has_permission()
+
+
+class OrderOwnListView(LoginRequiredMixin, ListView):
+    """Return orders filter by owner."""
+
+    # ListView default
+    model = Order
+    paginate_by = 2
+    context_object_name = "orders"
+    template_name = "orders/list.html"
+
+    def get_queryset(self):
+        """
+        Getting only the orders by owner.
+        """
+        return (
+            super()
+            .get_queryset()
+            .select_related("employee__user")
+            .select_related("meal")
+            .select_related("menu")
+            .filter(employee__user_id=self.request.user.pk)
+        )
+
+
+class OrderListView(OrderOwnListView):
+    """Return all orders."""
+
+    # PermissionRequiredMixin
+    permission_required = ("orders.view_order",)
+
+    def get_queryset(self):
+        """
+        Getting all orders without filter
+        """
+        return (
+            Order.objects.select_related("employee__user")
+            .select_related("meal")
+            .select_related("menu")
+            .all()
+        )
+
+
+class OrderUpdateView(PermissionRequiredMixin, UpdateView):
+    """Class to handle orders's edition."""
+
+    # PermissionRequiredMixin
+    permission_required = ("orders.change_order",)
+
+    # UpdateView default
+    model = Order
+    form_class = OrderUpdateForm
+    template_name = "orders/update.html"
+
+    def has_permission(self) -> bool:
+        """
+        Allowing if the employee is the order's owner. If not is the owner
+        check the permissions in permission_required.
+        """
+        order = self.get_object()
+        if order.employee.user.pk == self.request.user.pk:
             return True
         return super().has_permission()

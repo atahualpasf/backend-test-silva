@@ -43,7 +43,7 @@ class Order(TimeStampedModel, SoftDeleteModel):
         related_query_name="order",
     )
     instructions = models.TextField(
-        _("instruccions"),
+        _("instructions"),
         blank=True,
         help_text=_("Specify customizations (e.g. no tomatoes in the salad)"),
     )

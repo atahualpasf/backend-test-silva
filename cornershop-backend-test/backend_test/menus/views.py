@@ -6,20 +6,14 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms.models import inlineformset_factory
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 
 # Backend test
 from backend_test.menus.forms import MealForm, MenuForm
 from backend_test.menus.models import Meal, Menu, MenuOption
-from backend_test.orders.forms import OrderForm
 from backend_test.orders.models.orders import Order
 from backend_test.users.models import Employee
-
-
-def options(request):
-    return HttpResponse("Hola options")
 
 
 # Menus views
@@ -148,6 +142,9 @@ class MenuPublicDetailView(DetailView):
     raise_exception=True,
 )
 def management_menu_options(request, menu_id):
+    """
+    View function that allow create and update multiple menu options.
+    """
     menu = Menu.objects.get(pk=menu_id)
     MenuOptionInlineFormSet = inlineformset_factory(
         Menu,
@@ -162,7 +159,6 @@ def management_menu_options(request, menu_id):
         formset = MenuOptionInlineFormSet(request.POST, instance=menu)
         if formset.is_valid():
             formset.save()
-            # Do something. Should generally end with a redirect. For example:
             return HttpResponseRedirect(menu.get_absolute_url())
     else:
         formset = MenuOptionInlineFormSet(instance=menu)

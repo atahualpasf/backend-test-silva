@@ -6,11 +6,18 @@
       <p class="mt-4 mb-0"><b>{{ order.created }}</b></p>
     </div>
 
+    {% if user.pk == order.employee.user.pk or perms.orders.change_order %}
+    {% if order.menu.is_available %}
     <div class="card-footer">
       <div class="row justify-content-center">
         <div class="col-6 text-center">
+          <a class="btn btn-block btn-primary" href="{% url "orders:update" order.pk %}" title="Edit">
+            <i class="fas fa-edit"></i>
+          </a>
         </div>
       </div>
     </div>
+    {% endif %}
+    {% endif %}
   </div>
 </div>
