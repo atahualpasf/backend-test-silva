@@ -2,13 +2,12 @@
 
 # Celery
 from celery.task import task
-
 # Django
 from django.conf import settings
 from django.utils import timezone
 
+# Python
 import pytz
-
 # Slack
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
