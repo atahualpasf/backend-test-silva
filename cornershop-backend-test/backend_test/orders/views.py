@@ -72,8 +72,7 @@ class GenerateOrderView(View):
                 "orders/error.html",
                 {"msg": "You have to be a Cornershop employee to order.", "menu": menu},
             )
-
-        if employee.pk != request.POST.get("employee", None):
+        if str(employee.pk) != request.POST.get("employee", None):
             return HttpResponseRedirect(reverse("users:logout"))
 
         # Verify if employee already has an order
@@ -100,7 +99,7 @@ class GenerateOrderView(View):
             )
 
         order = form.save()
-        return redirect(order.get_absolute_url())
+        return redirect(reverse("orders:update", kwargs={"pk": order.pk}))
 
 
 class OrderDetailView(PermissionRequiredMixin, DetailView):
