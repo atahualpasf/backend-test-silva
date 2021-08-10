@@ -67,5 +67,12 @@ class Menu(TimeStampedModel, SoftDeleteModel):
                 self.date.day,
                 settings.GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR,
             ),
-            timezone=pytz.timezone("America/Santiago"),
+            timezone=pytz.timezone(settings.MENU_DATE_TIMEZONE),
+        )
+
+    def is_available(self):
+        timezone.activate(pytz.timezone(settings.MENU_DATE_TIMEZONE))
+        return (
+            timezone.localtime(timezone.now()).date() == self.date
+            and timezone.localtime(timezone.now()) < self.get_deadline_datetime()
         )

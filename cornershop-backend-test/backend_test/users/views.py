@@ -4,9 +4,7 @@
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
 
 
 @login_required

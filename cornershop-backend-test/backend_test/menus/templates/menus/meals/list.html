@@ -15,7 +15,7 @@
       <a class="btn btn-block btn-primary" href="{% url "meals:create" %}">Create meal</a>
     </div>
   </div>
-  <div class="row">
+  <div class="row justify-content-center">
     {% for meal in meals %}
     {% include "menus/meals/includes/meal_card.html" %}
     {% endfor %}

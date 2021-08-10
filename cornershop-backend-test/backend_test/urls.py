@@ -27,4 +27,7 @@ urlpatterns = [
         "meals/",
         include((meals_patterns, "meals"), namespace="meals"),
     ),
+    path(
+        "orders/", include(("backend_test.orders.urls", "orders"), namespace="orders")
+    ),
 ]

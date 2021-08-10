@@ -17,11 +17,13 @@
       <h3 class="mb-0">Menu options</h3>
     </div>
   </div>
+  {% if menu.is_available %}
   <div class="row justify-content-center">
     <div class="col-8">
       <a class="btn btn-block btn-primary" href="{% url "menus:options:management" menu.pk %}">Menu options management</a>
     </div>
   </div>
+  {% endif %}
   <div class="row">
     <div class="col-12">
       <div class="row justify-content-center">

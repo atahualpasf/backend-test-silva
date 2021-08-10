@@ -14,7 +14,15 @@
   <div class="border-top my-3"></div>
   <div class="row">
     <div class="col-12">
-      <h3 class="mb-0">Please select your preferred option</h3>
+      {% if not menu.is_available %}
+        <h3 class="mb-0">This menu is unavailable at this time</h3>
+      {% elif order %}
+        <h3 class="mb-0">You already have an order with this menu</h3>
+      {% elif not is_valid_user %}
+        <h3 class="mb-0">You have to be a Cornershop employee to order</h3>
+      {% else %}
+        <h3 class="mb-0">Please select your preferred option</h3>
+      {% endif %}
     </div>
   </div>
   <div class="row">

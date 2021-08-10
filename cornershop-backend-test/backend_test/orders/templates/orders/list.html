@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_title %}Order's list{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Orders's list</h2>
+    </div>
+  </div>
+  <div class="row">
+    {% for order in orders %}
+    {% include "orders/includes/order_card.html" %}
+    {% endfor %}
+  </div>
+  <div class="row mt-5">
+    <div class="col-12">
+      {% include "pagination.html" %}
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

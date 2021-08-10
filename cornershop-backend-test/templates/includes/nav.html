@@ -9,6 +9,20 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
 
+                {% if user.is_authenticated %}
+                <li class="nav-item nav-icon">
+                    <a href="{% url "orders:mine-list" %}" title="My orders" tooltip="My orders">
+                        My orders
+                    </a>
+                </li>
+                {% endif %}
+                {% if perms.orders.view_order %}
+                <li class="nav-item nav-icon">
+                    <a href="{% url "orders:index" %}" title="Orders" tooltip="Orders">
+                        Orders
+                    </a>
+                </li>
+                {% endif %}
                 {% if perms.menus.view_menu %}
                 <li class="nav-item nav-icon">
                     <a href="{% url "menus:index" %}" title="Menus" tooltip="Menus">

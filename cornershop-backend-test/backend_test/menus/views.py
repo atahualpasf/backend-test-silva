@@ -6,18 +6,14 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms.models import inlineformset_factory
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.utils import timezone
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.edit import UpdateView
 
 # Backend test
 from backend_test.menus.forms import MealForm, MenuForm
 from backend_test.menus.models import Meal, Menu, MenuOption
-from backend_test.utils.mixins import GroupRequiredMixin
-
-
-def options(request):
-    return HttpResponse("Hola options")
+from backend_test.orders.models.orders import Order
+from backend_test.users.models import Employee
 
 
 # Menus views
@@ -94,20 +90,43 @@ class MenuPublicDetailView(DetailView):
     slug_url_kwarg = "uuid"
     template_name = "menus/menus/public.html"
 
+    # OPTIMIZE: Check again to simplify order generation
     def get_context_data(self, **kwargs):
         """
         Passing menu options of the menu in context data.
         """
         context = super(MenuPublicDetailView, self).get_context_data(**kwargs)
+
+        # Load menu options
         context["menu_options"] = (
             MenuOption.objects.filter(menu=self.object)
             .select_related("meal")
             .order_by("option")
         )
-        context["can_generate_order"] = (
-            timezone.now().date() == self.object.date
-            and timezone.now() < self.object.get_deadline_datetime()
+
+        # Load employee if exists
+        try:
+            employee = (
+                self.request.user.employees.get()
+                if self.request.user.is_authenticated
+                else None
+            )
+        except Employee.DoesNotExist:
+            employee = None
+        context["employee"] = employee
+
+        # Verify if already generated order
+        order = (
+            Order.objects.filter(
+                employee_id=employee.pk, menu_id=self.object.pk
+            ).first()
+            if employee
+            else None
         )
+        context["order"] = order
+
+        # Verify valid user
+        context["is_valid_user"] = not self.request.user.is_authenticated or employee
         return context
 
 
@@ -123,6 +142,9 @@ class MenuPublicDetailView(DetailView):
     raise_exception=True,
 )
 def management_menu_options(request, menu_id):
+    """
+    View function that allow create and update multiple menu options.
+    """
     menu = Menu.objects.get(pk=menu_id)
     MenuOptionInlineFormSet = inlineformset_factory(
         Menu,
@@ -134,10 +156,9 @@ def management_menu_options(request, menu_id):
         can_delete=False,
     )
     if request.method == "POST":
-        formset = MenuOptionInlineFormSet(request.POST, request.FILES, instance=menu)
+        formset = MenuOptionInlineFormSet(request.POST, instance=menu)
         if formset.is_valid():
             formset.save()
-            # Do something. Should generally end with a redirect. For example:
             return HttpResponseRedirect(menu.get_absolute_url())
     else:
         formset = MenuOptionInlineFormSet(instance=menu)
