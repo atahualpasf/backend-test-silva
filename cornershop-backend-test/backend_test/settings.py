@@ -46,6 +46,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
 ]
 
 THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
@@ -56,9 +57,12 @@ LOCAL_APPS = [
     "backend_test.users",
     "backend_test.menus",
     "backend_test.orders",
+    "backend_test.slack",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "backend_test.middleware.HealthCheckAwareSessionMiddleware",
@@ -258,3 +262,9 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 # Integer between 0 - 23
 MENU_DATE_TIMEZONE = "America/Santiago"
 GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR = 23
+
+# Slack integration
+SLACK_CLIENT_ID = os.getenv("SLACK_CLIENT_ID")
+SLACK_CLIENT_SECRET = os.getenv("SLACK_CLIENT_SECRET")
+SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
+SLACK_SCOPES = os.getenv("SLACK_SCOPES", "chat:write")

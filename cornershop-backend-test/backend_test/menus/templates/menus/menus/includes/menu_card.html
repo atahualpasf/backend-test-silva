@@ -25,11 +25,15 @@
           </a>
         </div>
         {% endif %}
-        {% if perms.menus.send_slack_reminder and menu.is_available %}
+        {% if perms.menus.send_slack_reminder and menu.is_available and menu_options %}
         <div class="col-4 text-center">
-          <a class="btn btn-block btn-primary" href="{% url "menus:update" menu.pk %}" title="Send slack reminder">
-            <i class="fas fa-bell"></i>
-          </a>
+          <form method="POST" action="{% url "menus:send-slack-reminder" %}">
+            {% csrf_token %}
+            <input type="hidden" name="menu" value="{{menu.pk}}">
+            <button type="submit" class="btn btn-block btn-primary" title="Send slack reminder">
+              <i class="fas fa-bell"></i>
+            </button>
+          </form>
         </div>
         {% endif %}
       </div>
