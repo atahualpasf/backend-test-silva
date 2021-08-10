@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
-{% block page_title %}Meal {{ meal.pk }} detail{% endblock %}
+{% block page_title %}Order {{ order.pk }} detail{% endblock %}
 
 {% block container %}
 
 <div class="container">
   <div class="row">
-    <h2 class="mb-0">Meal {{ meal.pk }} detail</h2>
+    <h2 class="mb-0">Order {{ order.pk }} detail</h2>
   </div>
   <div class="row justify-content-center">
-    {% include "menus/meals/includes/meal_card.html" %}
+    {% include "orders/includes/order_card.html" %}
   </div>
 </div>
 

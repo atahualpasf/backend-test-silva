@@ -2,6 +2,7 @@
 
 # Django
 from django.db import models
+from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
 
 # Backend test
@@ -56,3 +57,7 @@ class Order(TimeStampedModel, SoftDeleteModel):
     def __str__(self) -> str:
         """Return instance string representation"""
         return f"{self.pk}"
+
+    def get_absolute_url(self):
+        """Return url to see instance's detail"""
+        return reverse("orders:detail", kwargs={"pk": self.pk})

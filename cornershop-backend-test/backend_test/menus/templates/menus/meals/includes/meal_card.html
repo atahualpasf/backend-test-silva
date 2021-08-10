@@ -10,15 +10,21 @@
       <p class="mb-1">Name: {{ meal.name }}</p>
     </div>
 
-    {% if can_generate_order %}
+    {% if menu.is_available and not order and is_valid_user %}
     <div class="card-footer">
       <div class="row justify-content-center">
         <div class="col-6 text-center">
-          <a class="btn btn-block btn-primary" href="{% url "menus:detail" menu.pk %}" title="Show detail">
-            <i class="fas fa-utensils"></i>
-            Generate order request
-            <i class="fas fa-utensils"></i>
-          </a>
+          <form action="{% url "orders:generate" %}" method="post">
+            {% csrf_token %}
+              <input type="hidden" name="employee" value="{{ employee.pk }}">
+              <input type="hidden" name="menu" value="{{ menu.pk }}">
+              <input type="hidden" name="meal" value="{{ meal.pk }}">
+              <button type="submit" class="btn btn-block btn-primary">
+                <i class="fas fa-utensils"></i>
+                Select this meal
+                <i class="fas fa-utensils"></i>
+              </button>
+          </form>
         </div>
       </div>
     </div>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block page_title %}Meal's creation{% endblock %}
+
+{% block container %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Order's generation error</h2>
+    </div>
+  </div>
+  {% if msg %}
+  <div class="row justify-content-center">
+    <div class="col-6 text-danger">
+      {{ msg }}
+    </div>
+  </div>
+  {% endif %}
+  {% if menu %}
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <a class="btn btn-block btn-primary" href="{% url "menus:public" menu.uuid %}">Continuar</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+
+{% endblock %}

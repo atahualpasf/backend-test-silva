@@ -13,7 +13,9 @@ from django.views.generic.edit import UpdateView
 # Backend test
 from backend_test.menus.forms import MealForm, MenuForm
 from backend_test.menus.models import Meal, Menu, MenuOption
-from backend_test.utils.mixins import GroupRequiredMixin
+from backend_test.orders.forms import OrderForm
+from backend_test.orders.models.orders import Order
+from backend_test.users.models import Employee
 
 
 def options(request):
@@ -94,20 +96,43 @@ class MenuPublicDetailView(DetailView):
     slug_url_kwarg = "uuid"
     template_name = "menus/menus/public.html"
 
+    # OPTIMIZE: Check again to simplify order generation
     def get_context_data(self, **kwargs):
         """
         Passing menu options of the menu in context data.
         """
         context = super(MenuPublicDetailView, self).get_context_data(**kwargs)
+
+        # Load menu options
         context["menu_options"] = (
             MenuOption.objects.filter(menu=self.object)
             .select_related("meal")
             .order_by("option")
         )
-        context["can_generate_order"] = (
-            timezone.now().date() == self.object.date
-            and timezone.now() < self.object.get_deadline_datetime()
+
+        # Load employee if exists
+        try:
+            employee = (
+                self.request.user.employees.get()
+                if self.request.user.is_authenticated
+                else None
+            )
+        except Employee.DoesNotExist:
+            employee = None
+        context["employee"] = employee
+
+        # Verify if already generated order
+        order = (
+            Order.objects.filter(
+                employee_id=employee.pk, menu_id=self.object.pk
+            ).first()
+            if employee
+            else None
         )
+        context["order"] = order
+
+        # Verify valid user
+        context["is_valid_user"] = not self.request.user.is_authenticated or employee
         return context
 
 
@@ -134,7 +159,7 @@ def management_menu_options(request, menu_id):
         can_delete=False,
     )
     if request.method == "POST":
-        formset = MenuOptionInlineFormSet(request.POST, request.FILES, instance=menu)
+        formset = MenuOptionInlineFormSet(request.POST, instance=menu)
         if formset.is_valid():
             formset.save()
             # Do something. Should generally end with a redirect. For example:
