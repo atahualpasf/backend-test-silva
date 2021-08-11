@@ -1,5 +1,6 @@
 """Menu tasks."""
 
+# fmt: off
 # Celery
 from celery.task import task
 # Django
@@ -12,6 +13,8 @@ import pytz
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
+# fmt: on
+
 
 @task(name="send_menu_public_url", max_retries=3)
 def send_menu_public_url_task(data, text):
@@ -21,6 +24,6 @@ def send_menu_public_url_task(data, text):
     client = WebClient(token=settings.SLACK_BOT_TOKEN)
 
     try:
-        response = client.chat_postMessage(channel="general", blocks=data, text=text)
+        client.chat_postMessage(channel="general", blocks=data, text=text)
     except SlackApiError as e:
         assert e.response["error"]
