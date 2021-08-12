@@ -10,9 +10,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from backend_test.menus.models.menus import Menu
-
 # Backend test
+from backend_test.menus.models.menus import Menu
 from backend_test.orders.forms import OrderForm, OrderUpdateForm
 from backend_test.orders.models.orders import Order
 from backend_test.users.models.employees import Employee

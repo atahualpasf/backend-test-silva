@@ -53,11 +53,9 @@ THIRD_PARTY_APPS = ["rest_framework", "django_extensions"]
 
 LOCAL_APPS = [
     "backend_test.utils",
-    "backend_test.locations",
-    "backend_test.users",
-    "backend_test.menus",
-    "backend_test.orders",
-    "backend_test.slack",
+    "backend_test.users.apps.UsersAppConfig",
+    "backend_test.menus.apps.MenusAppConfig",
+    "backend_test.orders.apps.OrdersAppConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -261,7 +259,7 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 # App specific configurations
 # Integer between 0 - 23
 MENU_DATE_TIMEZONE = "America/Santiago"
-GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR = 23
+GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR = 11
 
 # Slack integration
 SLACK_CLIENT_ID = os.getenv("SLACK_CLIENT_ID")

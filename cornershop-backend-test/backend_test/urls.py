@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 from backend_test.menus.urls import meals_patterns
 
 from .utils.healthz import healthz
 
 urlpatterns = [
+    path("", RedirectView.as_view(url="users/")),
     path("healthz", healthz, name="healthz"),
     path("users/", include(("backend_test.users.urls", "users"), namespace="users")),
     path("menus/", include(("backend_test.menus.urls", "menus"), namespace="menus")),
@@ -30,5 +32,4 @@ urlpatterns = [
     path(
         "orders/", include(("backend_test.orders.urls", "orders"), namespace="orders")
     ),
-    path("slack/", include(("backend_test.slack.urls", "slack"), namespace="slack")),
 ]
