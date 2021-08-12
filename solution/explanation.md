@@ -25,3 +25,14 @@ Then, I wrote business and technical requirements.
 I added vscode settings to work more comfortable.
 
 ## 4. - From model to code
+
+I have translated my diagram to code.
+Almost at the end, I realized that I took some bad decisions about location and slack's username. I misunderstood the problem a bit.
+
+## 5. - Testing was a pain
+
+I think that every good solution must be tested but I had too many problems configuring. I could not make my test's database to start.
+
+## 6. Thanks in advance for all.
+
+I enjoyed my test too much.
