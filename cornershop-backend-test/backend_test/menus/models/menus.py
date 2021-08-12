@@ -65,7 +65,7 @@ class Menu(TimeStampedModel, SoftDeleteModel):
                 self.date.year,
                 self.date.month,
                 self.date.day,
-                settings.GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR,
+                settings.GENERATE_MENU_ORDER_REQUEST_DEADLINE_HOUR
             ),
             timezone=pytz.timezone(settings.MENU_DATE_TIMEZONE),
         )

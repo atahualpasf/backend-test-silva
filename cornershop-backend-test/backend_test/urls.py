@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import include, path
-from django.urls.base import reverse
 from django.views.generic import RedirectView
 
 from backend_test.menus.urls import meals_patterns

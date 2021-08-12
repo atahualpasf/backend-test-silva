@@ -1,5 +1,5 @@
 """Load initial data command"""
-
+# flake8: noqa
 # Django
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
@@ -47,14 +47,13 @@ class Command(BaseCommand):
 
         with transaction.atomic():
             for i in range(1, users_number):
-                user = User.objects.create(
-                    username=f"demo{i}",
+                user = User.objects.create_user(
                     email=f"demo{i}@demo.com",
+                    password=f"demo{i}123456",
+                    username=f"demo{i}",
                     first_name=f"Demo {i}",
                     last_name=f"Demo {i}",
                 )
-                user.set_password(f"demo{i}123456")
-                user.save()
 
                 if not i % 2:
                     Employee.objects.create(user=user)
